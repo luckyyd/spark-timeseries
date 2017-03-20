@@ -21,8 +21,8 @@ import java.time._
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 
-object YahooParser {
-  def yahooStringToTimeSeries(
+object DataParser {
+  def dataStringToTimeSeries(
     text: String,
     keyPrefix: String = "",
     zone: ZoneId = ZoneId.systemDefault())
@@ -37,13 +37,13 @@ object YahooParser {
     timeSeriesFromIrregularSamples(samples, labels, zone)
   }
 
-  def yahooFiles(
+  def dataFiles(
     dir: String,
     sc: SparkContext,
     zone: ZoneId = ZoneId.systemDefault())
     : RDD[TimeSeries[String]] = {
     sc.wholeTextFiles(dir).map { case (path, text) =>
-      YahooParser.yahooStringToTimeSeries(text, path.split('/').last, zone)
+      DataParser.dataStringToTimeSeries(text, path.split('/').last, zone)
     }
   }
 }

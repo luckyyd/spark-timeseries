@@ -17,12 +17,16 @@ package com.cloudera.sparkts.parsers
 import java.time.ZoneId
 import org.scalatest.{FunSuite, ShouldMatchers}
 
-class YahooParserSuite extends FunSuite with ShouldMatchers {
-  test("yahoo parser") {
+class GoogleParserSuite extends FunSuite with ShouldMatchers {
+  test("Google parser") {
     val is = getClass.getClassLoader.getResourceAsStream("GOOG.csv")
     val lines = scala.io.Source.fromInputStream(is).getLines().toArray
     val text = lines.mkString("\n")
-    val ts = YahooParser.yahooStringToTimeSeries(text, zone = ZoneId.of("Z"))
+    val ts = DataParser.dataStringToTimeSeries(text, zone = ZoneId.of("Z"))
     ts.data.numRows should be (lines.length - 1)
+    println(ts.data.numRows)
+    for (x <- 0 to (ts.data.values.length - 1) ){
+      println(ts.data.values(x))
+    }
   }
 }
